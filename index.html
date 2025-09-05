@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ketflux – Watch Anywhere</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="brand" aria-label="brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 3h4l6 18h-4L5 3Z" fill="#E50914"/><path d="M15 3h4v18h-4V3Z" fill="#B20710"/></svg>
+      <span>Ketflux</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn ghost" id="signinBtn">Sign In</button>
+      <button class="btn">Join Now</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Unlimited movies, TV shows and more.</h1>
+      <p>Watch anywhere. Cancel anytime. Ready to watch? Enter your email to create or restart your membership.</p>
+      <div class="email-bar">
+        <input type="email" placeholder="Email address" />
+        <button class="btn">Get Started ▶</button>
+      </div>
+      <div class="badges">
+        <span class="chip">HD/4K</span>
+        <span class="chip">No Ads</span>
+        <span class="chip">Download to watch offline</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ROWS -->
+  <section class="section">
+    <h2 class="row-title">Trending Now</h2>
+    <div class="row">
+      <button class="arrow left" aria-label="scroll left">◀</button>
+      <div class="scroller" id="row-trending"></div>
+      <button class="arrow right" aria-label="scroll right">▶</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="row-title">Top Picks for You</h2>
+    <div class="row">
+      <button class="arrow left" aria-label="scroll left">◀</button>
+      <div class="scroller" id="row-top"></div>
+      <button class="arrow right" aria-label="scroll right">▶</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="row-title">New Releases</h2>
+    <div class="row">
+      <button class="arrow left" aria-label="scroll left">◀</button>
+      <div class="scroller" id="row-new"></div>
+      <button class="arrow right" aria-label="scroll right">▶</button>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq">
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>What is Netflux?</summary>
+      <p>Netflux is a demo Netflix-style site built with HTML, CSS, and JavaScript to showcase UI skills.</p>
+    </details>
+    <details>
+      <summary>Can I watch real movies here?</summary>
+      <p>This is a portfolio front-end only. You can plug in a video API or your own content later.</p>
+    </details>
+    <details>
+      <summary>Is it responsive?</summary>
+      <p>Yes. The layout adapts to phones, tablets, and desktop screens.</p>
+    </details>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="grid">
+      <a href="#">FAQ</a>
+      <a href="#">Help Center</a>
+      <a href="#">Account</a>
+      <a href="#">Media Center</a>
+      <a href="#">Investor Relations</a>
+      <a href="#">Jobs</a>
+      <a href="#">Ways to Watch</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Privacy</a>
+      <a href="#">Cookie Preferences</a>
+      <a href="#">Corporate Information</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="foot-note">Netflux India</div>
+  </footer>
+
+  <!-- TRAILER MODAL -->
+  <div class="modal" id="trailerModal" role="dialog" aria-modal="true" aria-label="Trailer">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModal">✕</button>
+      <iframe id="ytFrame" src="" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- SIGN-IN SHEET (mock) -->
+  <div class="sheet" id="authSheet">
+    <h3 style="margin:0 0 6px">Sign in</h3>
+    <p style="margin:0 0 10px;color:var(--muted)">Sign up</p>
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <button class="btn" style="width:100%">Continue</button>
+  </div>
+<script>
+    // --------- SAMPLE DATA (posters + optional YouTube trailer IDs) ---------
+    const makePicsum = (seed, w=400, h=600) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
+
+    const trending = [
+      { id: 't1', title: 'Red Horizon', img: makePicsum('alpha1'), yt: 'ScMzIvxBSi4' },
+      { id: 't2', title: 'Night Runner', img: makePicsum('alpha2'), yt: 'ysz5S6PUM-U' },
+      { id: 't3', title: 'Echoes', img: makePicsum('alpha3') },
+      { id: 't4', title: 'Iron Tide', img: makePicsum('alpha4'), yt: 'aqz-KE-bpKQ' },
+      { id: 't5', title: 'Last Stand', img: makePicsum('alpha5') },
+      { id: 't6', title: 'Fractured', img: makePicsum('alpha6'), yt: 'sNPnbI1arSE' },
+      { id: 't7', title: 'Eventide', img: makePicsum('alpha7') },
+      { id: 't8', title: 'City of Glass', img: makePicsum('alpha8') },
+      { id: 't9', title: 'Afterlight', img: makePicsum('alpha9') },
+      { id: 't10', title: 'Nimbus', img: makePicsum('alpha10') },
+    ];
+
+    const topPicks = [
+      { id: 'p1', title: 'Deep Dive', img: makePicsum('beta1'), yt: 'gQDByCdjUXw' },
+      { id: 'p2', title: 'The Summit', img: makePicsum('beta2') },
+      { id: 'p3', title: 'Stardust', img: makePicsum('beta3') },
+      { id: 'p4', title: 'Paper Walls', img: makePicsum('beta4'), yt: 'aqz-KE-bpKQ' },
+      { id: 'p5', title: 'Third Wave', img: makePicsum('beta5') },
+      { id: 'p6', title: 'Static', img: makePicsum('beta6') },
+      { id: 'p7', title: 'Greyline', img: makePicsum('beta7'), yt: 'ysz5S6PUM-U' },
+      { id: 'p8', title: 'Overnight', img: makePicsum('beta8') },
+    ];
+
+    const newReleases = [
+      { id: 'n1', title: 'Violet', img: makePicsum('gamma1') },
+      { id: 'n2', title: 'Satellite', img: makePicsum('gamma2'), yt: 'ScMzIvxBSi4' },
+      { id: 'n3', title: 'Blackout', img: makePicsum('gamma3') },
+      { id: 'n4', title: 'Parallel', img: makePicsum('gamma4') },
+      { id: 'n5', title: 'Sparrow', img: makePicsum('gamma5') },
+      { id: 'n6', title: 'Hinterland', img: makePicsum('gamma6') },
+      { id: 'n7', title: 'Neon Rain', img: makePicsum('gamma7') },
+      { id: 'n8', title: 'Rough Cut', img: makePicsum('gamma8') },
+    ];
+
+    // --------- RENDER HELPERS ---------
+    function renderRow(el, items){
+      el.innerHTML = '';
+      for (const it of items){
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${it.img}" alt="${it.title}">
+          <div class="overlay">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>`;
+        card.title = it.title + (it.yt ? ' – Play trailer' : '');
+        card.addEventListener('click', () => openTrailer(it));
+        el.appendChild(card);
+      }
+    }
+
+    function setupRowArrows(section){
+      const scroller = section.querySelector('.scroller');
+      const left = section.querySelector('.arrow.left');
+      const right = section.querySelector('.arrow.right');
+      const amount = () => Math.min(600, section.clientWidth * 0.9);
+      left.addEventListener('click', () => scroller.scrollBy({left:-amount(), behavior:'smooth'}));
+      right.addEventListener('click', () => scroller.scrollBy({left: amount(), behavior:'smooth'}));
+    }
+
+    // --------- TRAILER MODAL ---------
+    const modal = document.getElementById('trailerModal');
+    const ytFrame = document.getElementById('ytFrame');
+    const closeBtn = document.getElementById('closeModal');
+
+    function openTrailer(item){
+      if(!item.yt){
+        // Fallback: subtle bounce to indicate no trailer
+        modal.classList.add('open');
+        ytFrame.src = 'about:blank';
+        modal.querySelector('.modal-card').insertAdjacentHTML('beforeend', '<div id="noTrailer" style="position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.75);font-weight:700;color:#ddd">Trailer not available</div>');
+        setTimeout(()=>{ document.getElementById('noTrailer')?.remove(); modal.classList.remove('open'); }, 900);
+        return;
+      }
+      modal.classList.add('open');
+      ytFrame.src = `https://www.youtube.com/embed/${item.yt}?autoplay=1&rel=0`;
+    }
+
+    function closeModal(){
+      modal.classList.remove('open');
+      ytFrame.src = '';
+    }
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    closeBtn.addEventListener('click', closeModal);
+
+    // --------- AUTH SHEET ---------
+    const authSheet = document.getElementById('authSheet');
+    document.getElementById('signinBtn').addEventListener('click', ()=>{
+      authSheet.classList.toggle('open');
+    });
+
+    // --------- INIT ---------
+    renderRow(document.getElementById('row-trending'), trending);
+    renderRow(document.getElementById('row-top'), topPicks);
+    renderRow(document.getElementById('row-new'), newReleases);
+
+    for(const row of document.querySelectorAll('.row')) setupRowArrows(row);
+
+</script>
+</body>
+</html>
